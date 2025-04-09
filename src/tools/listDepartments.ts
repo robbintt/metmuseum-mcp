@@ -3,7 +3,11 @@ import { DepartmentsSchema } from '../types/types';
 export const listDepartments = {
   name: 'list-departments',
   description: 'List all departments in the Met Museum',
-  inputSchema: {},
+  inputSchema: {
+    type: 'object',
+    properties: {},
+    required: [],
+  },
   execute: async () => {
     try {
       const response = await fetch('https://collectionapi.metmuseum.org/public/collection/v1/departments');
