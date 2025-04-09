@@ -1,12 +1,15 @@
 import z from 'zod';
 import { ObjectResponseSchema } from '../types/types';
 import imageToBase64 from 'image-to-base64';
+import { serverService } from '../services/serverService';
 
 export const getMuseumInputSchema = z.object({
   objectId: z.number().describe(`The ID of the object to retrieve`),
 });
 
 const baseURL = 'https://collectionapi.metmuseum.org/public/collection/v1/objects/';
+
+export const imageByTitle = new Map<string, string>()
 
 export const getMuseumObject = {
   name: 'get-museum-object',
@@ -43,6 +46,10 @@ export const getMuseumObject = {
           type: 'image' as const,
           data: imageBase64,
           mimeType: 'image/jpeg',
+        })
+        imageByTitle.set(data.title!, imageBase64)
+        serverService.getServer().server.notification({
+          method: 'notifications/resources/list_changed',
         })
       }
 

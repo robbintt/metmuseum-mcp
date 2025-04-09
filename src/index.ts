@@ -3,12 +3,14 @@
 import process from 'node:process';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { CallToolRequestSchema } from '@modelcontextprotocol/sdk/types.js';
+import { CallToolRequestSchema, ListResourcesRequestSchema, ReadResourceRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 import { handleCallTool } from './handlers/CallToolHandler';
 import { listDepartments } from './tools/listDepartments';
 import { search } from './tools/search';
 import { getMuseumObject } from './tools/getObject';
 import { serverService } from './services/serverService';
+import { handleListResources } from './handlers/ListResourcesHandler';
+import { handleReadResource } from './handlers/ReadResourceRequest';
 
 class MetMuseumServer {
   private server: McpServer;
@@ -56,6 +58,12 @@ class MetMuseumServer {
   private setupRequestHandlers(): void {
     this.server.server.setRequestHandler(CallToolRequestSchema, async (request) => {
       return await handleCallTool(request);
+    });
+    this.server.server.setRequestHandler(ListResourcesRequestSchema, async () => {
+      return await handleListResources();
+    })
+    this.server.server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
+      return await handleReadResource(request);
     });
   }
 
