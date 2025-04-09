@@ -1,0 +1,59 @@
+import z from 'zod';
+import { ObjectResponseSchema } from '../types/types';
+import imageToBase64 from 'image-to-base64';
+
+export const getMuseumInputSchema = z.object({
+  objectId: z.number().describe(`The ID of the object to retrieve`),
+});
+
+const baseURL = 'https://collectionapi.metmuseum.org/public/collection/v1/objects/';
+
+export const getMuseumObject = {
+  name: 'get-museum-object',
+  description: 'Get a museum object by its ID',
+  inputSchema: getMuseumInputSchema,
+  execute: async ({ objectId }: z.infer<typeof getMuseumInputSchema>) => {
+    try {
+      const url = `${baseURL}${objectId}`;
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const jsonData = await response.json();
+      const parseResult = ObjectResponseSchema.safeParse(jsonData);
+      if (!parseResult.success) {
+        throw new Error(`Invalid response shape: ${JSON.stringify(parseResult.error.issues, null, 2)}`);
+      }
+      const data = parseResult.data;
+      const text = `Title: ${data.title}\n`
+      + `${data.artistDisplayName ? `Artist: ${data.artistDisplayName}\n` : ''}`
+      + `${data.artistDisplayBio ? `Artist Bio: ${data.artistDisplayBio}\n` : ''}`
+      + `${data.department ? `Department: ${data.department}\n` : ''}`
+      + `${data.medium ? `Medium: ${data.medium}\n` : ''}`;
+
+      const content = []
+      content.push({
+        type: 'text' as const,
+        text: text,
+      });
+      if (data.primaryImage) {
+        const imageBase64 = await imageToBase64(data.primaryImage)
+        content.push({
+          type: 'image' as const,
+          data: imageBase64,
+          mimeType: 'image/jpeg',
+        })
+      }
+
+      return { content }
+    }
+
+    catch (error) {
+      console.error('Error getting museum object:', error);
+      return {
+        content: [{ type: 'text' as const, text: `Error getting museum object id ${objectId}: ${error}` }],
+        isError: true,
+      };
+    }
+  },
+};

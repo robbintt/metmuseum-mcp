@@ -1,5 +1,4 @@
-import { access } from 'node:fs';
-import z, { object } from 'zod';
+import z from 'zod';
 
 /**
  * https://metmuseum.github.io/#departments

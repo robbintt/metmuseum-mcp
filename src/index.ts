@@ -7,6 +7,7 @@ import { CallToolRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 import { handleCallTool } from './handlers/CallToolHandler';
 import { listDepartments } from './tools/listDepartments';
 import { search } from './tools/search';
+import { getMuseumObject } from './tools/getObject';
 
 class MetMuseumServer {
   private server: McpServer;
@@ -43,6 +44,12 @@ class MetMuseumServer {
       search.inputSchema.shape,
       search.execute,
     );
+    this.server.tool(
+      getMuseumObject.name,
+      getMuseumObject.description,
+      getMuseumObject.inputSchema.shape,
+      getMuseumObject.execute,
+    )
   }
 
   private setupRequestHandlers(): void {
