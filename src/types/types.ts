@@ -29,13 +29,19 @@ export const SearchResponseSchema = z.object({
 });
 
 const constituentSchema = z.object({
-  constituentID: z.string(),
+  constituentID: z.number(),
   role: z.string(),
   name: z.string(),
   constituentULAN_URL: z.string(),
   constituentWikidata_URL: z.string(),
   gender: z.string(),
 });
+
+const tagSchema = z.object({
+  term: z.string(),
+  AAT_URL: z.string(),
+  Wikidata_URL: z.string(),
+}).partial();
 
 /**
  * https://metmuseum.github.io/#object
@@ -80,7 +86,7 @@ export const ObjectResponseSchema = z.object({
   dimensions: z.string().describe('Size of the artwork or object'),
   measurements: z.array(z.object({
     elementName: z.string(),
-    elementDescription: z.string().optional(),
+    elementDescription: z.string().nullable().optional(),
     elementMeasurements: z.record(z.string(), z.number()),
   })).nullable().describe('Array of elements, each with a name, description, and set of measurements. Spatial measurements are in centimeters; weights are in kg'),
   creditLine: z.string().describe('Text acknowledging the source or origin of the artwork and the year the object was acquired'),
@@ -101,7 +107,8 @@ export const ObjectResponseSchema = z.object({
   metadataDate: z.string().describe('Date metadata was last updated'),
   repository: z.string().describe('Indicates the repository containing the artwork'),
   objectURL: z.string().describe('URL to the object\'s page on metmuseum.org'),
-  tags: z.array(z.string()).nullable().describe('An array of subject keyword tags associated with the object'),
+  tags: z.array(z.union([z.string(), tagSchema])).nullable()
+  .describe('An array of subject keyword tags associated with the object'),
   objectWikidata_URL: z.string().describe('Wikidata URL for the object'),
   isTimelineWork: z.boolean().describe('Whether the artwork is featured on the Timeline of Art History website'),
   GalleryNumber: z.string().describe('Gallery number where artwork is located'),
