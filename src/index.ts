@@ -3,6 +3,9 @@
 import process from 'node:process';
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
+import { handleCallTool } from './handlers/CallToolHandler';
+import { listDepartments } from './tools/listDepartments';
 
 class MetMuseumServer {
   private server: Server;
@@ -22,6 +25,17 @@ class MetMuseumServer {
     );
 
     this.setupErrorHandling();
+    this.setupRequestHandlers();
+  }
+
+  private setupRequestHandlers(): void {
+    this.server.setRequestHandler(ListToolsRequestSchema, async () => ({
+      tools: [listDepartments],
+    }));
+
+    this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
+      return await handleCallTool(request);
+    });
   }
 
   private setupErrorHandling(): void {
