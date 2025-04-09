@@ -29,15 +29,16 @@ export const getMuseumObject = {
       + `${data.artistDisplayName ? `Artist: ${data.artistDisplayName}\n` : ''}`
       + `${data.artistDisplayBio ? `Artist Bio: ${data.artistDisplayBio}\n` : ''}`
       + `${data.department ? `Department: ${data.department}\n` : ''}`
-      + `${data.medium ? `Medium: ${data.medium}\n` : ''}`;
+      + `${data.medium ? `Medium: ${data.medium}\n` : ''}`
+      + `${data.primaryImage ? `Primary Image URL: ${data.primaryImage}\n` : ''}`;
 
       const content = []
       content.push({
         type: 'text' as const,
         text: text,
       });
-      if (data.primaryImage) {
-        const imageBase64 = await imageToBase64(data.primaryImage)
+      if (data.primaryImageSmall) {
+        const imageBase64 = await imageToBase64(data.primaryImageSmall)
         content.push({
           type: 'image' as const,
           data: imageBase64,
