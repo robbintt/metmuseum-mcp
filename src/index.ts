@@ -8,6 +8,7 @@ import { handleCallTool } from './handlers/CallToolHandler';
 import { listDepartments } from './tools/listDepartments';
 import { search } from './tools/search';
 import { getMuseumObject } from './tools/getObject';
+import { serverService } from './services/serverService';
 
 class MetMuseumServer {
   private server: McpServer;
@@ -25,7 +26,7 @@ class MetMuseumServer {
         },
       },
     );
-
+    serverService.setServer(this.server)
     this.setupErrorHandling();
     this.setupTools();
     this.setupRequestHandlers();
