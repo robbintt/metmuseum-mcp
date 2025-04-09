@@ -10,9 +10,13 @@ export const SearchInputSchema = z.object({
 
 type SearchInput = z.infer<typeof SearchInputSchema>;
 
+const searchDescription
+  = `Search for objects in the Met Museum. Will return Total objects found, `
+    + `followed by a list of Object Ids. By default only objects with images are returned`;
+
 export const search = {
   name: 'search-museum-objects',
-  description: 'Search for objects in the Met Museum, by default only objects with images are returned',
+  description: searchDescription,
   inputSchema: SearchInputSchema,
   execute: async ({ q, hasImages, title, departmentId }: SearchInput) => {
     try {
