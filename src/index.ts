@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 
 import process from 'node:process';
-import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
+import { CallToolRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 import { handleCallTool } from './handlers/CallToolHandler';
 import { listDepartments } from './tools/listDepartments';
 import { search } from './tools/search';
 
 class MetMuseumServer {
-  private server: Server;
+  private server: McpServer;
 
   constructor() {
-    this.server = new Server(
+    this.server = new McpServer(
       {
         name: 'met-museum-mcp',
         version: '0.1.0',
@@ -26,21 +26,33 @@ class MetMuseumServer {
     );
 
     this.setupErrorHandling();
+    this.setupTools();
     this.setupRequestHandlers();
   }
 
-  private setupRequestHandlers(): void {
-    this.server.setRequestHandler(ListToolsRequestSchema, async () => ({
-      tools: [listDepartments, search],
-    }));
+  private setupTools(): void {
+    this.server.tool(
+      listDepartments.name,
+      listDepartments.description,
+      listDepartments.inputSchema.shape,
+      listDepartments.execute,
+    );
+    this.server.tool(
+      search.name,
+      search.description,
+      search.inputSchema.shape,
+      search.execute,
+    );
+  }
 
-    this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
+  private setupRequestHandlers(): void {
+    this.server.server.setRequestHandler(CallToolRequestSchema, async (request) => {
       return await handleCallTool(request);
     });
   }
 
   private setupErrorHandling(): void {
-    this.server.onerror = (error) => {
+    this.server.server.onerror = (error) => {
       console.error('[MCP Error]', error);
     };
 

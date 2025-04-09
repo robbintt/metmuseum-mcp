@@ -37,20 +37,20 @@ export const search = {
       }
       if (parseResult.data.total === 0) {
         return {
-          content: [{ type: 'text', text: 'No objects found' }],
+          content: [{ type: 'text' as const, text: 'No objects found' }],
           isError: false,
         };
       }
       const text = `Total objects found: ${parseResult.data.total}\nObject IDs: ${parseResult.data.objectIDs.join(', ')}`;
       return {
-        content: [{ type: 'text', text }],
+        content: [{ type: 'text' as const, text }],
         isError: false,
       };
     }
     catch (error) {
       console.error('Error searching museum objects:', error);
       return {
-        content: [{ type: 'text', text: `Error searching museum objects: ${error}` }],
+        content: [{ type: 'text' as const, text: `Error searching museum objects: ${error}` }],
         isError: true,
       };
     }

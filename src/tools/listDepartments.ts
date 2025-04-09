@@ -1,13 +1,10 @@
+import z from 'zod';
 import { DepartmentsSchema } from '../types/types';
 
 export const listDepartments = {
   name: 'list-departments',
   description: 'List all departments in the Met Museum',
-  inputSchema: {
-    type: 'object',
-    properties: {},
-    required: [],
-  },
+  inputSchema: z.object({}).describe('No input required'),
   execute: async () => {
     try {
       const response = await fetch('https://collectionapi.metmuseum.org/public/collection/v1/departments');
@@ -23,14 +20,14 @@ export const listDepartments = {
         return `Department ID: ${department.departmentId}, Display Name: ${department.displayName}`;
       }).join('\n');
       return {
-        content: [{ type: 'text', text }],
+        content: [{ type: 'text' as const, text }],
         isError: false,
       };
     }
     catch (error) {
       console.error('Error listing departments:', error);
       return {
-        content: [{ type: 'text', text: `Error listing departments: ${error}` }],
+        content: [{ type: 'text' as const, text: `Error listing departments: ${error}` }],
         isError: true,
       };
     }
