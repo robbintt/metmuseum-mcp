@@ -6,6 +6,7 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 import { handleCallTool } from './handlers/CallToolHandler';
 import { listDepartments } from './tools/listDepartments';
+import { search } from './tools/search';
 
 class MetMuseumServer {
   private server: Server;
@@ -30,7 +31,7 @@ class MetMuseumServer {
 
   private setupRequestHandlers(): void {
     this.server.setRequestHandler(ListToolsRequestSchema, async () => ({
-      tools: [listDepartments],
+      tools: [listDepartments, search],
     }));
 
     this.server.setRequestHandler(CallToolRequestSchema, async (request) => {

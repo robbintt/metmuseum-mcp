@@ -18,3 +18,12 @@ export const DepartmentsSchema = z.object({
     + 'query parameter on the `/objects` endpoint',
   ),
 });
+
+export const SearchResponseSchema = z.object({
+  total: z.number().describe(
+    'The total number of publicly-available objects',
+  ),
+  objectIDs: z.array(z.number()).describe(
+    'An array containing the object ID of publicly-available object',
+  ),
+});
