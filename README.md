@@ -51,8 +51,11 @@ If there is an image it is added to the Resource of the server via the title of 
   Artist: Vincent van Gogh
   Artist Bio: Dutch, Zundert 1853–1890 Auvers-sur-Oise
   Department: European Paintings
+  Credit Line: Bequest of Miss Adelaide Milton de Groot (1876-1967), 1967
   Medium: Oil on canvas
+  Dimensions: 16 x 12 1/2 in. (40.6 x 31.8 cm)
   Primary Image URL: https://images.metmuseum.org/CRDImages/ep/original/DT1502_cropped2.jpg
+  Tags: Men, Self-portraits
   **image of object in base64 encoding**
   ```
 
