@@ -7,7 +7,7 @@ import { SearchResponseSchema } from '../types/types';
 export class SearchMuseumObjectsTool {
   // Define public tool properties
   public readonly name: string = 'search-museum-objects';
-  public readonly description: string = 'Search for objects in the Met Museum. Will return Total objects found, '
+  public readonly description: string = 'Search for objects in the Metropolitan Museum of Art (Met Museum). Will return Total objects found, '
     + 'followed by a list of Object Ids. By default only objects with images are returned';
 
   // Define the input schema

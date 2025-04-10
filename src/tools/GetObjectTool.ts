@@ -5,7 +5,7 @@ import { ObjectResponseSchema } from '../types/types';
 
 export class GetObjectTool {
   public readonly name: string = 'get-museum-object';
-  public readonly description: string = 'Get a museum object by its ID';
+  public readonly description: string = 'Get a museum object by its ID, from the Metropolitan Museum of Art Collection';
   public readonly inputSchema = z.object({
     objectId: z.number().describe('The ID of the museum object to retrieve'),
   }).describe('Get a museum object by its ID');

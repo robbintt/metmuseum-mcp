@@ -3,7 +3,7 @@ import { DepartmentsSchema } from '../types/types';
 
 export class ListDepartmentsTool {
   public readonly name: string = 'list-departments';
-  public readonly description: string = 'List all departments in the Met Museum';
+  public readonly description: string = 'List all departments in the Metropolitan Museum of Art (Met Museum)';
   public readonly inputSchema = z.object({}).describe('No input required');
 
   private readonly apiUrl: string = 'https://collectionapi.metmuseum.org/public/collection/v1/departments';
