@@ -1,23 +1,28 @@
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import imageToBase64 from 'image-to-base64';
 import z from 'zod';
-import { serverService } from '../services/serverService';
 import { ObjectResponseSchema } from '../types/types';
 
-export const getMuseumInputSchema = z.object({
-  objectId: z.number().describe(`The ID of the object to retrieve`),
-});
+export class GetObjectTool {
+  public readonly name: string = 'get-museum-object';
+  public readonly description: string = 'Get a museum object by its ID';
+  public readonly inputSchema = z.object({
+    objectId: z.number().describe('The ID of the museum object to retrieve'),
+  }).describe('Get a museum object by its ID');
 
-const baseURL = 'https://collectionapi.metmuseum.org/public/collection/v1/objects/';
+  public readonly imageByTitle = new Map<string, string>();
 
-export const imageByTitle = new Map<string, string>();
+  private readonly baseURL: string = 'https://collectionapi.metmuseum.org/public/collection/v1/objects/';
 
-export const getMuseumObject = {
-  name: 'get-museum-object',
-  description: 'Get a museum object by its ID',
-  inputSchema: getMuseumInputSchema,
-  execute: async ({ objectId }: z.infer<typeof getMuseumInputSchema>) => {
+  private readonly server: McpServer;
+
+  constructor(server: McpServer) {
+    this.server = server;
+  }
+
+  public async execute({ objectId }: z.infer<typeof this.inputSchema>) {
     try {
-      const url = `${baseURL}${objectId}`;
+      const url = `${this.baseURL}${objectId}`;
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -47,15 +52,14 @@ export const getMuseumObject = {
           data: imageBase64,
           mimeType: 'image/jpeg',
         });
-        imageByTitle.set(data.title!, imageBase64);
-        serverService.getServer().server.notification({
+        this.imageByTitle.set(data.title!, imageBase64);
+        this.server.server.notification({
           method: 'notifications/resources/list_changed',
         });
       }
 
       return { content };
     }
-
     catch (error) {
       console.error('Error getting museum object:', error);
       return {
@@ -63,5 +67,5 @@ export const getMuseumObject = {
         isError: true,
       };
     }
-  },
-};
+  }
+}

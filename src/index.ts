@@ -5,18 +5,20 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { CallToolRequestSchema, ListResourcesRequestSchema, ReadResourceRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 import { CallToolRequestHandler } from './handlers/CallToolHandler';
-import { handleListResources } from './handlers/ListResourcesHandler';
-import { handleReadResource } from './handlers/ReadResourceRequest';
-import { serverService } from './services/serverService';
-import { getMuseumObject } from './tools/getObject';
+import { ListResourcesHandler } from './handlers/ListResourcesHandler';
+import { ReadResourceHandler } from './handlers/ReadResourceHandler';
+import { GetObjectTool } from './tools/GetObjectTool';
 import { ListDepartmentsTool } from './tools/ListDepartmentsTool';
 import { SearchMuseumObjectsTool } from './tools/SearchMuseumObjectsTool';
 
 class MetMuseumServer {
   private server: McpServer;
   private callToolHandler: CallToolRequestHandler;
+  private listResourcesHandler: ListResourcesHandler;
+  private readResourceHandler: ReadResourceHandler;
   private listDepartments: ListDepartmentsTool;
   private search: SearchMuseumObjectsTool;
+  private getMuseumObject: GetObjectTool;
 
   constructor() {
     this.server = new McpServer(
@@ -33,8 +35,10 @@ class MetMuseumServer {
     );
     this.listDepartments = new ListDepartmentsTool();
     this.search = new SearchMuseumObjectsTool();
-    this.callToolHandler = new CallToolRequestHandler(this.listDepartments, this.search);
-    serverService.setServer(this.server);
+    this.getMuseumObject = new GetObjectTool(this.server);
+    this.callToolHandler = new CallToolRequestHandler(this.listDepartments, this.search, this.getMuseumObject);
+    this.listResourcesHandler = new ListResourcesHandler(this.getMuseumObject);
+    this.readResourceHandler = new ReadResourceHandler(this.getMuseumObject);
     this.setupErrorHandling();
     this.setupTools();
     this.setupRequestHandlers();
@@ -54,10 +58,10 @@ class MetMuseumServer {
       this.search.execute.bind(this.search),
     );
     this.server.tool(
-      getMuseumObject.name,
-      getMuseumObject.description,
-      getMuseumObject.inputSchema.shape,
-      getMuseumObject.execute,
+      this.getMuseumObject.name,
+      this.getMuseumObject.description,
+      this.getMuseumObject.inputSchema.shape,
+      this.getMuseumObject.execute.bind(this.getMuseumObject),
     );
   }
 
@@ -66,10 +70,10 @@ class MetMuseumServer {
       return await this.callToolHandler.handleCallTool(request);
     });
     this.server.server.setRequestHandler(ListResourcesRequestSchema, async () => {
-      return await handleListResources();
+      return await this.listResourcesHandler.handleListResources();
     });
     this.server.server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
-      return await handleReadResource(request);
+      return await this.readResourceHandler.handleReadResource(request);
     });
   }
 

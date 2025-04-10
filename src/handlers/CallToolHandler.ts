@@ -1,15 +1,17 @@
 import type { CallToolRequest } from '@modelcontextprotocol/sdk/types.js';
+import type { GetObjectTool } from '../tools/GetObjectTool';
 import type { ListDepartmentsTool } from '../tools/ListDepartmentsTool';
 import type { SearchMuseumObjectsTool } from '../tools/SearchMuseumObjectsTool';
-import { getMuseumInputSchema, getMuseumObject } from '../tools/getObject';
 
 export class CallToolRequestHandler {
   private listDepartments: ListDepartmentsTool;
   private search: SearchMuseumObjectsTool;
+  private getMuseumObject: GetObjectTool;
 
-  constructor(listDepartments: ListDepartmentsTool, search: SearchMuseumObjectsTool) {
+  constructor(listDepartments: ListDepartmentsTool, search: SearchMuseumObjectsTool, getMuseumObject: GetObjectTool) {
     this.listDepartments = listDepartments;
     this.search = search;
+    this.getMuseumObject = getMuseumObject;
   }
 
   public async handleCallTool(request: CallToolRequest) {
@@ -27,13 +29,13 @@ export class CallToolRequestHandler {
           const { q, hasImages, title, departmentId } = parsedArgs.data;
           return await this.search.execute({ q, hasImages, title, departmentId });
         }
-        case getMuseumObject.name: {
-          const parsedArgs = getMuseumInputSchema.safeParse(args);
+        case this.getMuseumObject.name: {
+          const parsedArgs = this.getMuseumObject.inputSchema.safeParse(args);
           if (!parsedArgs.success) {
             throw new Error(`Invalid arguments for getMuseumObject: ${JSON.stringify(parsedArgs.error.issues, null, 2)}`);
           }
           const { objectId } = parsedArgs.data;
-          return await getMuseumObject.execute({ objectId });
+          return await this.getMuseumObject.execute({ objectId });
         }
         default:
           throw new Error(`Unknown tool name: ${name}`);
