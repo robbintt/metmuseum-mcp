@@ -107,8 +107,7 @@ export const ObjectResponseSchema = z.object({
   metadataDate: z.string().describe('Date metadata was last updated'),
   repository: z.string().describe('Indicates the repository containing the artwork'),
   objectURL: z.string().describe('URL to the object\'s page on metmuseum.org'),
-  tags: z.array(z.union([z.string(), tagSchema])).nullable()
-  .describe('An array of subject keyword tags associated with the object'),
+  tags: z.array(z.union([z.string(), tagSchema])).nullable().describe('An array of subject keyword tags associated with the object'),
   objectWikidata_URL: z.string().describe('Wikidata URL for the object'),
   isTimelineWork: z.boolean().describe('Whether the artwork is featured on the Timeline of Art History website'),
   GalleryNumber: z.string().describe('Gallery number where artwork is located'),

@@ -1,7 +1,7 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import imageToBase64 from 'image-to-base64';
 import z from 'zod';
-import { ObjectResponseSchema } from '../types/types';
+import { ObjectResponseSchema } from '../types/types.js';
 
 export class GetObjectTool {
   public readonly name: string = 'get-museum-object';

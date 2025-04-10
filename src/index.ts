@@ -4,12 +4,12 @@ import process from 'node:process';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { CallToolRequestSchema, ListResourcesRequestSchema, ReadResourceRequestSchema } from '@modelcontextprotocol/sdk/types.js';
-import { CallToolRequestHandler } from './handlers/CallToolHandler';
-import { ListResourcesHandler } from './handlers/ListResourcesHandler';
-import { ReadResourceHandler } from './handlers/ReadResourceHandler';
-import { GetObjectTool } from './tools/GetObjectTool';
-import { ListDepartmentsTool } from './tools/ListDepartmentsTool';
-import { SearchMuseumObjectsTool } from './tools/SearchMuseumObjectsTool';
+import { CallToolRequestHandler } from './handlers/CallToolHandler.js';
+import { ListResourcesHandler } from './handlers/ListResourcesHandler.js';
+import { ReadResourceHandler } from './handlers/ReadResourceHandler.js';
+import { GetObjectTool } from './tools/GetObjectTool.js';
+import { ListDepartmentsTool } from './tools/ListDepartmentsTool.js';
+import { SearchMuseumObjectsTool } from './tools/SearchMuseumObjectsTool.js';
 
 class MetMuseumServer {
   private server: McpServer;

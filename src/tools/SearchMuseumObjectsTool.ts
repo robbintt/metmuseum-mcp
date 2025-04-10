@@ -1,5 +1,5 @@
 import z from 'zod';
-import { SearchResponseSchema } from '../types/types';
+import { SearchResponseSchema } from '../types/types.js';
 
 /**
  * Tool for searching objects in the Met Museum

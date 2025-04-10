@@ -1,5 +1,5 @@
 import type { ReadResourceRequest } from '@modelcontextprotocol/sdk/types.js';
-import type { GetObjectTool } from '../tools/GetObjectTool';
+import type { GetObjectTool } from '../tools/GetObjectTool.js';
 
 export class ReadResourceHandler {
   private getObjectTool: GetObjectTool;

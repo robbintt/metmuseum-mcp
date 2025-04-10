@@ -1,4 +1,4 @@
-import type { GetObjectTool } from '../tools/GetObjectTool';
+import type { GetObjectTool } from '../tools/GetObjectTool.js';
 
 export class ListResourcesHandler {
   private getObjectTool: GetObjectTool;

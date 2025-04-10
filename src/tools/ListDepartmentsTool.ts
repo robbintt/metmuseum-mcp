@@ -1,5 +1,5 @@
 import z from 'zod';
-import { DepartmentsSchema } from '../types/types';
+import { DepartmentsSchema } from '../types/types.js';
 
 export class ListDepartmentsTool {
   public readonly name: string = 'list-departments';

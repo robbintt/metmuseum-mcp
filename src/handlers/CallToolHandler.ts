@@ -1,7 +1,7 @@
 import type { CallToolRequest } from '@modelcontextprotocol/sdk/types.js';
-import type { GetObjectTool } from '../tools/GetObjectTool';
-import type { ListDepartmentsTool } from '../tools/ListDepartmentsTool';
-import type { SearchMuseumObjectsTool } from '../tools/SearchMuseumObjectsTool';
+import type { GetObjectTool } from '../tools/GetObjectTool.js';
+import type { ListDepartmentsTool } from '../tools/ListDepartmentsTool.js';
+import type { SearchMuseumObjectsTool } from '../tools/SearchMuseumObjectsTool.js';
 
 export class CallToolRequestHandler {
   private listDepartments: ListDepartmentsTool;
