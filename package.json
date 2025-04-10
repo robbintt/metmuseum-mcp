@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.9.0",
   "private": false,
-  "description": "",
+  "description": "A Model Context Protocol (MCP) server that provides access to the Metropolitan Museum of Art Collection through natural language interactions. This server allows AI models to search The Met's art collection and have art works available as a Resource.",
   "author": "mike.chao.one@gmail.com",
   "license": "MIT",
   "homepage": "https://github.com/mikechao/metmuseum-mcp",
