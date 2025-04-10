@@ -13,7 +13,7 @@ export class SearchMuseumObjectsTool {
 
   // Define the input schema
   public readonly inputSchema = z.object({
-    q: z.string().describe(`Returns a listing of all Object IDs for objects that contain the search query within the object's data`),
+    q: z.string().describe(`The search query, Returns a listing of all Object IDs for objects that contain the search query within the object's data`),
     hasImages: z.boolean().optional().default(true).describe(`Only returns objects that have images`),
     title: z.boolean().optional().default(false).describe(`Returns objects that match the query, specifically searching against the title field for objects.`),
     departmentId: z.number().optional().describe(`Returns objects that are in the specified department. The departmentId should come from the 'list-departments' tool.`),
