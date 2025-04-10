@@ -26,8 +26,8 @@ export class CallToolRequestHandler {
           if (!parsedArgs.success) {
             throw new Error(`Invalid arguments for search: ${JSON.stringify(parsedArgs.error.issues, null, 2)}`);
           }
-          const { q, hasImages, title, departmentId } = parsedArgs.data;
-          return await this.search.execute({ q, hasImages, title, departmentId });
+          const { q, hasImages, title, departmentId, tags } = parsedArgs.data;
+          return await this.search.execute({ q, hasImages, title, departmentId, tags });
         }
         case this.getMuseumObject.name: {
           const parsedArgs = this.getMuseumObject.inputSchema.safeParse(args);
