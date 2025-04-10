@@ -9,13 +9,14 @@ export class SearchMuseumObjectsTool {
   // Define public tool properties
   public readonly name: string = 'search-museum-objects';
   public readonly description: string = 'Search for objects in the Metropolitan Museum of Art (Met Museum). Will return Total objects found, '
-    + 'followed by a list of Object Ids. By default only objects with images are returned';
+    + 'followed by a list of Object Ids. By default only objects with images are returned. The parameter title should be set to true if you want to search for objects by title.'
+    + 'The parameter hasImages is true by default, but can be set to false to return objects without images.';
 
   // Define the input schema
   public readonly inputSchema = z.object({
     q: z.string().describe(`The search query, Returns a listing of all Object IDs for objects that contain the search query within the object's data`),
     hasImages: z.boolean().optional().default(true).describe(`Only returns objects that have images`),
-    title: z.boolean().optional().default(false).describe(`Returns objects that match the query, specifically searching against the title field for objects.`),
+    title: z.boolean().optional().default(false).describe(`This should be set to true if you want to search for objects by title`),
     departmentId: z.number().optional().describe(`Returns objects that are in the specified department. The departmentId should come from the 'list-departments' tool.`),
   });
 
