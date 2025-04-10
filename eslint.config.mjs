@@ -1,4 +1,4 @@
-import antfu from '@antfu/eslint-config'
+import antfu from '@antfu/eslint-config';
 
 export default antfu({
   formatters: true,
@@ -7,4 +7,4 @@ export default antfu({
     indent: 2,
     quotes: 'single',
   },
-})
+});
