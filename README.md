@@ -81,6 +81,16 @@ Add this to your `claude_desktop_config.json`:
 }
 ```
 
+## Example queries
+
+Here some questions you can ask the AI model when this server in connected:
+
+```
+Can you show me a few painting from the Asian Art department?
+Can you find the painting titled "Corridor in the Asylum"?
+Can you show me some art that is tagged with "Self-portraits" from the Photographs department?
+```
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
