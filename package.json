@@ -1,10 +1,36 @@
 {
   "name": "metmuseum-mcp",
-  "version": "1.0.0",
+  "type": "module",
+  "version": "0.9.0",
+  "private": false,
   "description": "",
-  "author": "",
-  "license": "ISC",
-  "main": "index.js",
+  "author": "mike.chao.one@gmail.com",
+  "license": "MIT",
+  "homepage": "https://github.com/mikechao/metmuseum-mcp",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mikechao/metmuseum-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mikechao/metmuseum-mcp/issues"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "the-met",
+    "metropolitan-museum-of-art",
+    "art",
+    "museum"
+  ],
+  "main": "dist/index.js",
+  "bin": {
+    "metmuseum-mcp": "dist/index.js"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist"
+  ],
   "scripts": {
     "build": "tsc && shx chmod +x dist/*.js",
     "prepare": "npm run build"
