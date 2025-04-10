@@ -63,6 +63,24 @@ If there is an image it is added to the Resource of the server via the title of 
   **base64 encoding of jpeg image**
   ```
 
+### Usage with Claude Desktop
+
+Add this to your `claude_desktop_config.json`:
+
+```json
+{
+  "mcp-servers": {
+    "met-museum": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "metmuseum-mcp"
+      ]
+    }
+  }
+}
+```
+
 ## License
 
 This MCP server is licensed under the MIT License. This means you are free to use, modify, and distribute the software, subject to the terms and conditions of the MIT License. For more details, please see the LICENSE file in the project repository.
