@@ -5,18 +5,18 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { CallToolRequestSchema, ListResourcesRequestSchema, ReadResourceRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 import { CallToolRequestHandler } from './handlers/CallToolHandler';
-
 import { handleListResources } from './handlers/ListResourcesHandler';
 import { handleReadResource } from './handlers/ReadResourceRequest';
 import { serverService } from './services/serverService';
 import { getMuseumObject } from './tools/getObject';
 import { ListDepartmentsTool } from './tools/ListDepartmentsTool';
-import { search } from './tools/search';
+import { SearchMuseumObjectsTool } from './tools/SearchMuseumObjectsTool';
 
 class MetMuseumServer {
   private server: McpServer;
   private callToolHandler: CallToolRequestHandler;
   private listDepartments: ListDepartmentsTool;
+  private search: SearchMuseumObjectsTool;
 
   constructor() {
     this.server = new McpServer(
@@ -32,7 +32,8 @@ class MetMuseumServer {
       },
     );
     this.listDepartments = new ListDepartmentsTool();
-    this.callToolHandler = new CallToolRequestHandler(this.listDepartments);
+    this.search = new SearchMuseumObjectsTool();
+    this.callToolHandler = new CallToolRequestHandler(this.listDepartments, this.search);
     serverService.setServer(this.server);
     this.setupErrorHandling();
     this.setupTools();
@@ -47,10 +48,10 @@ class MetMuseumServer {
       this.listDepartments.execute.bind(this.listDepartments),
     );
     this.server.tool(
-      search.name,
-      search.description,
-      search.inputSchema.shape,
-      search.execute,
+      this.search.name,
+      this.search.description,
+      this.search.inputSchema.shape,
+      this.search.execute.bind(this.search),
     );
     this.server.tool(
       getMuseumObject.name,

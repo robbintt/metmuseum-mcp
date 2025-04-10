@@ -1,13 +1,15 @@
 import type { CallToolRequest } from '@modelcontextprotocol/sdk/types.js';
 import type { ListDepartmentsTool } from '../tools/ListDepartmentsTool';
+import type { SearchMuseumObjectsTool } from '../tools/SearchMuseumObjectsTool';
 import { getMuseumInputSchema, getMuseumObject } from '../tools/getObject';
-import { search, SearchInputSchema } from '../tools/search';
 
 export class CallToolRequestHandler {
   private listDepartments: ListDepartmentsTool;
+  private search: SearchMuseumObjectsTool;
 
-  constructor(listDepartments: ListDepartmentsTool) {
+  constructor(listDepartments: ListDepartmentsTool, search: SearchMuseumObjectsTool) {
     this.listDepartments = listDepartments;
+    this.search = search;
   }
 
   public async handleCallTool(request: CallToolRequest) {
@@ -17,13 +19,13 @@ export class CallToolRequestHandler {
       switch (name) {
         case this.listDepartments.name:
           return await this.listDepartments.execute();
-        case search.name: {
-          const parsedArgs = SearchInputSchema.safeParse(args);
+        case this.search.name: {
+          const parsedArgs = this.search.inputSchema.safeParse(args);
           if (!parsedArgs.success) {
             throw new Error(`Invalid arguments for search: ${JSON.stringify(parsedArgs.error.issues, null, 2)}`);
           }
           const { q, hasImages, title, departmentId } = parsedArgs.data;
-          return await search.execute({ q, hasImages, title, departmentId });
+          return await this.search.execute({ q, hasImages, title, departmentId });
         }
         case getMuseumObject.name: {
           const parsedArgs = getMuseumInputSchema.safeParse(args);
