@@ -1,7 +1,7 @@
-import z from 'zod';
-import { ObjectResponseSchema } from '../types/types';
 import imageToBase64 from 'image-to-base64';
+import z from 'zod';
 import { serverService } from '../services/serverService';
+import { ObjectResponseSchema } from '../types/types';
 
 export const getMuseumInputSchema = z.object({
   objectId: z.number().describe(`The ID of the object to retrieve`),
@@ -9,7 +9,7 @@ export const getMuseumInputSchema = z.object({
 
 const baseURL = 'https://collectionapi.metmuseum.org/public/collection/v1/objects/';
 
-export const imageByTitle = new Map<string, string>()
+export const imageByTitle = new Map<string, string>();
 
 export const getMuseumObject = {
   name: 'get-museum-object',
@@ -29,31 +29,31 @@ export const getMuseumObject = {
       }
       const data = parseResult.data;
       const text = `Title: ${data.title}\n`
-      + `${data.artistDisplayName ? `Artist: ${data.artistDisplayName}\n` : ''}`
-      + `${data.artistDisplayBio ? `Artist Bio: ${data.artistDisplayBio}\n` : ''}`
-      + `${data.department ? `Department: ${data.department}\n` : ''}`
-      + `${data.medium ? `Medium: ${data.medium}\n` : ''}`
-      + `${data.primaryImage ? `Primary Image URL: ${data.primaryImage}\n` : ''}`;
+        + `${data.artistDisplayName ? `Artist: ${data.artistDisplayName}\n` : ''}`
+        + `${data.artistDisplayBio ? `Artist Bio: ${data.artistDisplayBio}\n` : ''}`
+        + `${data.department ? `Department: ${data.department}\n` : ''}`
+        + `${data.medium ? `Medium: ${data.medium}\n` : ''}`
+        + `${data.primaryImage ? `Primary Image URL: ${data.primaryImage}\n` : ''}`;
 
-      const content = []
+      const content = [];
       content.push({
         type: 'text' as const,
-        text: text,
+        text,
       });
       if (data.primaryImageSmall) {
-        const imageBase64 = await imageToBase64(data.primaryImageSmall)
+        const imageBase64 = await imageToBase64(data.primaryImageSmall);
         content.push({
           type: 'image' as const,
           data: imageBase64,
           mimeType: 'image/jpeg',
-        })
-        imageByTitle.set(data.title!, imageBase64)
+        });
+        imageByTitle.set(data.title!, imageBase64);
         serverService.getServer().server.notification({
           method: 'notifications/resources/list_changed',
-        })
+        });
       }
 
-      return { content }
+      return { content };
     }
 
     catch (error) {

@@ -4,16 +4,19 @@ import process from 'node:process';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { CallToolRequestSchema, ListResourcesRequestSchema, ReadResourceRequestSchema } from '@modelcontextprotocol/sdk/types.js';
-import { handleCallTool } from './handlers/CallToolHandler';
-import { listDepartments } from './tools/listDepartments';
-import { search } from './tools/search';
-import { getMuseumObject } from './tools/getObject';
-import { serverService } from './services/serverService';
+import { CallToolRequestHandler } from './handlers/CallToolHandler';
+
 import { handleListResources } from './handlers/ListResourcesHandler';
 import { handleReadResource } from './handlers/ReadResourceRequest';
+import { serverService } from './services/serverService';
+import { getMuseumObject } from './tools/getObject';
+import { ListDepartmentsTool } from './tools/ListDepartmentsTool';
+import { search } from './tools/search';
 
 class MetMuseumServer {
   private server: McpServer;
+  private callToolHandler: CallToolRequestHandler;
+  private listDepartments: ListDepartmentsTool;
 
   constructor() {
     this.server = new McpServer(
@@ -28,7 +31,9 @@ class MetMuseumServer {
         },
       },
     );
-    serverService.setServer(this.server)
+    this.listDepartments = new ListDepartmentsTool();
+    this.callToolHandler = new CallToolRequestHandler(this.listDepartments);
+    serverService.setServer(this.server);
     this.setupErrorHandling();
     this.setupTools();
     this.setupRequestHandlers();
@@ -36,10 +41,10 @@ class MetMuseumServer {
 
   private setupTools(): void {
     this.server.tool(
-      listDepartments.name,
-      listDepartments.description,
-      listDepartments.inputSchema.shape,
-      listDepartments.execute,
+      this.listDepartments.name,
+      this.listDepartments.description,
+      this.listDepartments.inputSchema.shape,
+      this.listDepartments.execute.bind(this.listDepartments),
     );
     this.server.tool(
       search.name,
@@ -52,16 +57,16 @@ class MetMuseumServer {
       getMuseumObject.description,
       getMuseumObject.inputSchema.shape,
       getMuseumObject.execute,
-    )
+    );
   }
 
   private setupRequestHandlers(): void {
     this.server.server.setRequestHandler(CallToolRequestSchema, async (request) => {
-      return await handleCallTool(request);
+      return await this.callToolHandler.handleCallTool(request);
     });
     this.server.server.setRequestHandler(ListResourcesRequestSchema, async () => {
       return await handleListResources();
-    })
+    });
     this.server.server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
       return await handleReadResource(request);
     });
