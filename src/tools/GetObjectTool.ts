@@ -38,8 +38,11 @@ export class GetObjectTool {
         + `${data.artistDisplayName ? `Artist: ${data.artistDisplayName}\n` : ''}`
         + `${data.artistDisplayBio ? `Artist Bio: ${data.artistDisplayBio}\n` : ''}`
         + `${data.department ? `Department: ${data.department}\n` : ''}`
+        + `${data.creditLine ? `Credit Line: ${data.creditLine}\n` : ''}`
         + `${data.medium ? `Medium: ${data.medium}\n` : ''}`
-        + `${data.primaryImage ? `Primary Image URL: ${data.primaryImage}\n` : ''}`;
+        + `${data.dimensions ? `Dimensions: ${data.dimensions}\n` : ''}`
+        + `${data.primaryImage ? `Primary Image URL: ${data.primaryImage}\n` : ''}`
+        + `${data.tags ? `Tags: ${data.tags.map(tag => tag.term).join(', ')}\n` : ''}`;
 
       const content = [];
       content.push({
