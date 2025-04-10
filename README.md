@@ -55,3 +55,11 @@ If there is an image it is added to the Resource of the server via the title of 
   Primary Image URL: https://images.metmuseum.org/CRDImages/ep/original/DT1502_cropped2.jpg
   **image of object in base64 encoding**
   ```
+
+## License
+
+This MCP server is licensed under the MIT License. This means you are free to use, modify, and distribute the software, subject to the terms and conditions of the MIT License. For more details, please see the LICENSE file in the project repository.
+
+## Disclaimer
+
+This library is not officially associated with The Metropolitan Museum of Art in New York. It is a third-party implementation of the [The Metropolitan Museum of Art Collection API](https://metmuseum.github.io/) with a MCP Server.
