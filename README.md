@@ -27,7 +27,7 @@ Search for various objects in The Met based on the inputs.
 
 - Inputs:
   - `q` (string): The search term e.g. sunflowers
-  - `hasImages` (boolean, optional, default: true): Only search for objects with images
+  - `hasImages` (boolean, optional, default: false): Only search for objects with images
   - `title` (boolean, optional, default: false): Returns objects that match the query, specifically searching against the title field for objects.
   - `departmentId` (number, optional): Returns objects that are a part of a specific department.
 - Outputs:
