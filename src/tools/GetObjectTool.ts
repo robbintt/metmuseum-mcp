@@ -2,6 +2,7 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import imageToBase64 from 'image-to-base64';
 import z from 'zod';
 import { ObjectResponseSchema } from '../types/types.js';
+import { metMuseumRateLimiter } from '../utils/RateLimiter.js';
 
 export class GetObjectTool {
   public readonly name: string = 'get-museum-object';
@@ -23,7 +24,7 @@ export class GetObjectTool {
   public async execute({ objectId }: z.infer<typeof this.inputSchema>) {
     try {
       const url = `${this.baseURL}${objectId}`;
-      const response = await fetch(url);
+      const response = await metMuseumRateLimiter.fetch(url.toString());
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }

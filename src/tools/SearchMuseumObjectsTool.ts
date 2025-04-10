@@ -1,5 +1,6 @@
 import z from 'zod';
 import { SearchResponseSchema } from '../types/types.js';
+import { metMuseumRateLimiter } from '../utils/RateLimiter.js';
 
 /**
  * Tool for searching objects in the Met Museum
@@ -36,7 +37,7 @@ export class SearchMuseumObjectsTool {
         url.searchParams.set('departmentId', departmentId.toString());
       }
 
-      const response = await fetch(url.toString());
+      const response = await metMuseumRateLimiter.fetch(url.toString());
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }

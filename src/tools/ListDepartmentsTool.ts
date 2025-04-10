@@ -1,5 +1,6 @@
 import z from 'zod';
 import { DepartmentsSchema } from '../types/types.js';
+import { metMuseumRateLimiter } from '../utils/RateLimiter.js';
 
 export class ListDepartmentsTool {
   public readonly name: string = 'list-departments';
@@ -10,7 +11,7 @@ export class ListDepartmentsTool {
 
   public async execute() {
     try {
-      const response = await fetch(this.apiUrl);
+      const response = await metMuseumRateLimiter.fetch(this.apiUrl);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
