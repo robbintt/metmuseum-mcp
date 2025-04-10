@@ -9,6 +9,7 @@ export class GetObjectTool {
   public readonly description: string = 'Get a museum object by its ID, from the Metropolitan Museum of Art Collection';
   public readonly inputSchema = z.object({
     objectId: z.number().describe('The ID of the museum object to retrieve'),
+    returnImage: z.boolean().optional().default(true).describe('Whether to return the image (if available) of the object and add it to the server resources'),
   }).describe('Get a museum object by its ID');
 
   public readonly imageByTitle = new Map<string, string>();
@@ -21,7 +22,7 @@ export class GetObjectTool {
     this.server = server;
   }
 
-  public async execute({ objectId }: z.infer<typeof this.inputSchema>) {
+  public async execute({ objectId, returnImage }: z.infer<typeof this.inputSchema>) {
     try {
       const url = `${this.baseURL}${objectId}`;
       const response = await metMuseumRateLimiter.fetch(url.toString());
@@ -49,7 +50,7 @@ export class GetObjectTool {
         type: 'text' as const,
         text,
       });
-      if (data.primaryImageSmall) {
+      if (returnImage && data.primaryImageSmall) {
         const imageBase64 = await imageToBase64(data.primaryImageSmall);
         content.push({
           type: 'image' as const,

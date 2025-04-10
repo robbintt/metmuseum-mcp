@@ -45,6 +45,7 @@ If there is an image it is added to the Resource of the server via the title of 
 
 - Inputs:
   - `objectId` (number): The id of the object to retrieve
+  - `returnImage` (boolean, optional, default: true): Whether to return the image (if available) of the object and add it to the server resources
 - Outputs:
   ```
   Title: Self-Portrait with a Straw Hat (obverse: The Potato Peeler)
@@ -56,7 +57,10 @@ If there is an image it is added to the Resource of the server via the title of 
   Dimensions: 16 x 12 1/2 in. (40.6 x 31.8 cm)
   Primary Image URL: https://images.metmuseum.org/CRDImages/ep/original/DT1502_cropped2.jpg
   Tags: Men, Self-portraits
-  **image of object in base64 encoding**
+  ```
+  If returnImage is true
+  ```
+  **base64 encoding of jpeg image**
   ```
 
 ## License

@@ -34,8 +34,8 @@ export class CallToolRequestHandler {
           if (!parsedArgs.success) {
             throw new Error(`Invalid arguments for getMuseumObject: ${JSON.stringify(parsedArgs.error.issues, null, 2)}`);
           }
-          const { objectId } = parsedArgs.data;
-          return await this.getMuseumObject.execute({ objectId });
+          const { objectId, returnImage } = parsedArgs.data;
+          return await this.getMuseumObject.execute({ objectId, returnImage });
         }
         default:
           throw new Error(`Unknown tool name: ${name}`);
