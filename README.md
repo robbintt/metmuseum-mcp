@@ -83,6 +83,19 @@ Add this to your `claude_desktop_config.json`:
 }
 ```
 
+### Usage with LibreChat
+
+Add the following in your `librechat.yaml`
+
+```yaml
+mcpServers:
+  metmuseum:
+    command: npx
+    args:
+      - -y
+      - metmuseum-mcp
+```
+
 ## Example queries
 
 Here some questions you can ask the AI model when this server in connected:
