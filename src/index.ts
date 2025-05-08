@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 import process from 'node:process';
-import { McpServer } from '@modelcontextprotocol/sdk/server/McpServer.js';
-import { HttpServerTransport } from '@modelcontextprotocol/sdk/transports/HttpServerTransport.js';
-import { CallToolRequestSchema, ListResourcesRequestSchema, ReadResourceRequestSchema } from '@modelcontextprotocol/sdk/types.js';
+import { McpServer } from '@modelcontextprotocol/sdk/server/McpServer';
+import { HttpServerTransport } from '@modelcontextprotocol/sdk/transports/HttpServerTransport';
+import { CallToolRequestSchema, ListResourcesRequestSchema, ReadResourceRequestSchema, CallToolRequest, ReadResourceRequest } from '@modelcontextprotocol/sdk/types';
 import { CallToolRequestHandler } from './handlers/CallToolHandler.js';
 import { ListResourcesHandler } from './handlers/ListResourcesHandler.js';
 import { ReadResourceHandler } from './handlers/ReadResourceHandler.js';
@@ -66,19 +66,19 @@ class MetMuseumServer {
   }
 
   private setupRequestHandlers(): void {
-    this.server.server.setRequestHandler(CallToolRequestSchema, async (request) => {
+    this.server.server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest) => {
       return await this.callToolHandler.handleCallTool(request);
     });
     this.server.server.setRequestHandler(ListResourcesRequestSchema, async () => {
       return await this.listResourcesHandler.handleListResources();
     });
-    this.server.server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
+    this.server.server.setRequestHandler(ReadResourceRequestSchema, async (request: ReadResourceRequest) => {
       return await this.readResourceHandler.handleReadResource(request);
     });
   }
 
   private setupErrorHandling(): void {
-    this.server.server.onerror = (error) => {
+    this.server.server.onerror = (error: Error) => {
       console.error('[MCP Error]', error);
     };
 
