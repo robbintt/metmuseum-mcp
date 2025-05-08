@@ -6,6 +6,12 @@ set -e
 # Define image name
 IMAGE_NAME="met-museum-mcp"
 
+# Stop and remove any existing container and image
+echo "Cleaning up existing Docker resources for $IMAGE_NAME..."
+docker stop "$IMAGE_NAME" 2>/dev/null || true
+docker rm "$IMAGE_NAME" 2>/dev/null || true
+docker rmi "$IMAGE_NAME" 2>/dev/null || true
+
 # Build the Docker image
 echo "Building Docker image: $IMAGE_NAME..."
 docker build -t "$IMAGE_NAME" .
