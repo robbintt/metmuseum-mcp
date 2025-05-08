@@ -2,7 +2,7 @@
 
 import process from 'node:process';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { HttpServerTransport } from '@modelcontextprotocol/sdk/server/http.js';
 import { CallToolRequestSchema, ListResourcesRequestSchema, ReadResourceRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 import { CallToolRequestHandler } from './handlers/CallToolHandler.js';
 import { ListResourcesHandler } from './handlers/ListResourcesHandler.js';
@@ -89,9 +89,9 @@ class MetMuseumServer {
   }
 
   async run(): Promise<void> {
-    const transport = new StdioServerTransport();
+    const transport = new HttpServerTransport({ port: 8000 });
     await this.server.connect(transport);
-    console.error('Met Museum MCP server running on stdio');
+    console.error('Met Museum MCP server running on http://localhost:8000');
   }
 }
 
