@@ -2,7 +2,7 @@
 
 import process from 'node:process';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { HttpServerTransport } from '@modelcontextprotocol/sdk/server/http.js';
+import { HttpServerTransport } from '@modelcontextprotocol/sdk/server/http';
 import { CallToolRequestSchema, ListResourcesRequestSchema, ReadResourceRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 import { CallToolRequestHandler } from './handlers/CallToolHandler.js';
 import { ListResourcesHandler } from './handlers/ListResourcesHandler.js';
