@@ -1,9 +1,7 @@
 #!/usr/bin/env node
 
 import process from 'node:process';
-import { McpServer } from '@modelcontextprotocol/sdk/server/McpServer';
-import { HttpServerTransport } from '@modelcontextprotocol/sdk/transports/HttpServerTransport';
-import { CallToolRequestSchema, ListResourcesRequestSchema, ReadResourceRequestSchema, CallToolRequest, ReadResourceRequest } from '@modelcontextprotocol/sdk/types';
+import { McpServer, HttpServerTransport, CallToolRequestSchema, ListResourcesRequestSchema, ReadResourceRequestSchema, CallToolRequest, ReadResourceRequest } from '@modelcontextprotocol/sdk';
 import { CallToolRequestHandler } from './handlers/CallToolHandler.js';
 import { ListResourcesHandler } from './handlers/ListResourcesHandler.js';
 import { ReadResourceHandler } from './handlers/ReadResourceHandler.js';
