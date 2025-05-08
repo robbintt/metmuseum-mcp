@@ -3,7 +3,7 @@
     "target": "ES2022",
     "rootDir": "./src",
     "module": "Node16",
-    "moduleResolution": "Node16",
+    "moduleResolution": "Bundler",
     "strict": true,
     "outDir": "./dist",
     "esModuleInterop": true,
